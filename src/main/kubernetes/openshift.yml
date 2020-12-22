@@ -1,0 +1,38 @@
+##
+# Este es el autoscaler para el pod
+#
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: as-jn-quarkus-camel-gateway-base
+spec:
+  scaleTargetRef:
+    apiVersion: apps.openshift.io/v1 
+    kind: DeploymentConfig 
+    name: jn-quarkus-camel-gateway-base
+    subresource: scale
+  minReplicas: 1 
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 75
+---
+##
+# Este es el ConfigMap
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: jn-quarkus-camel-gateway-base
+    group: com.javanes.micro
+    provider: javanes
+  name: cm-jn-quarkus-camel-gateway-base
+data:
+  application.properties: |-
+    # ===================================================================
+    # PROPIEDADES PERSONALIZADAS DE LA APLICACION
+    #
+    # Se pueden sobre escribir las propiedades del archivo principal
+    # en cualquier momento.
+    # ===================================================================
+    custom.hello.url=http://jn-quarkus-base:8080
+    custom.hello.prefix=0
