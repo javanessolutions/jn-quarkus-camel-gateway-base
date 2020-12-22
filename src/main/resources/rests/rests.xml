@@ -1,0 +1,21 @@
+<rests xmlns="http://camel.apache.org/schema/spring">
+	<rest id="greeting" path="/v1/hello-controller">
+        <get uri="/hello">
+            <to uri="direct:hello-route" >
+                <description>A la ruta get hello</description>
+            </to>
+        </get>
+        <get uri="/hello/{name}">
+            <param name="name" type="path"/>
+            <to uri="direct:hello-route" >
+                <description>A la ruta get hello</description>
+            </to>
+        </get>
+        <post uri="/hello">
+            <param name="body" type="body"/>
+            <to uri="direct:hello-route">
+                <description>A la ruta post hello</description>
+            </to>
+        </post>
+    </rest>
+</rests>
