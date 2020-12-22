@@ -1,0 +1,3 @@
+MAVEN_ARGS=-e -DskipTests -Dcom.redhat.xpaas.repo.redhatga -Djava.net.preferIPv4Stack=true -s /tmp/artifacts/configuration/settings.xml -Dmaven.repo.local=/tmp/artifacts/m2 -Dquarkus.openshift.labels.app.openshift.io/runtime=java package
+MAVEN_S2I_ARTIFACT_DIRS=target
+S2I_SOURCE_DEPLOYMENTS_FILTER=*-runner.jar lib

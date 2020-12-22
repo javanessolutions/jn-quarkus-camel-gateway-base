@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://camel.apache.org/schema/spring"
+        xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <route id="hello-route">
+        <!-- Crea un control de errores para esta ruta. -->
+        <onException>
+            <description>Control de excepciones.</description>
+            <exception>java.lang.Exception</exception>
+            <handled><constant>true</constant></handled>
+            <process ref="exceptionProcessor">
+                <description>Interpreta el error y lo envuelve en un pojo "AppExceptionResponse"</description>
+            </process>
+            <marshal>
+                <description>Convierte el resultado a JSON.</description>
+                <json library="Jackson" unmarshalTypeName="com.javanes.micro.quarkus.camel.pojo.AppExceptionResponse"/>
+            </marshal>
+            <to uri="log:exchangeLog?level=WARN&amp;multiline=true&amp;showAll=true&amp;style=Fixed"/>
+        </onException>
+        <!-- Comienzo de la ruta -->
+        <from uri="direct:hello-route">
+            <description>Desde el rests.xml</description>
+        </from>
+        <setHeader name="jn-prefix">
+            <description>Número de caracteres que se quitarán al inicio</description>
+            <simple>{{custom.hello.prefix}}</simple>
+        </setHeader>
+        <process ref="prepareCallProcessor">
+            <description>Prepara la llamada al backend.</description>
+        </process>
+        <to uri="{{custom.hello.url}}?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+        <removeHeaders pattern="jn-*"/>
+        <to uri="log:exchangeLog?level=DEBUG&amp;multiline=true&amp;showAll=true&amp;style=Fixed"/>
+    </route>
+
+</routes>

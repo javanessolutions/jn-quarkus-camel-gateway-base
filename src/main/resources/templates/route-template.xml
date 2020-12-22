@@ -1,0 +1,14 @@
+<routeTemplates xmlns="http://camel.apache.org/schema/spring">
+    <routeTemplate id="myTemplate">
+        <templateParameter name="name"/>
+        <from uri="direct:{{name}}">
+            <description>Desde el rests.xml</description>
+        </from>
+        <setHeader name="CamelHttpPath">
+            <constant>/</constant>
+        </setHeader>
+        <to uri="log:exchangeLog?level=DEBUG&amp;multiline=true&amp;showAll=true"/>
+        <to uri="http://google.com?bridgeEndpoint=true"></to>
+        <to uri="log:exchangeLog?level=DEBUG&amp;multiline=true&amp;showAll=true"/>
+    </routeTemplate>
+</routeTemplates>
