@@ -56,17 +56,29 @@ Con los dos comandos anteriores estarás seguro de que has hecho login y te encu
 
 Para los recursos de la aplicación se ha creado la carpeta `src/main/kubernetes`
 
-La configuración de tu archivo `src/main/resources/application.properties` la usamos para el desarrollo local en tu máquina. Para la inyección de configuraciones se ha creado el archivo `src/main/kubernetes/configmap.yml` que contiene la configuración de tu micro servicio en openshift. La configuración lo monta posteriormente en el pod en `deployments/config/application.properties`.
+La configuración de tu archivo `src/main/resources/application.properties` la usamos para el desarrollo local en tu máquina. Para la inyección de configuraciones se ha creado el archivo `src/main/kubernetes/openshift.yml` que contiene la configuración de tu micro servicio en openshift. La configuración lo monta posteriormente en el pod en `deployments/config/application.properties`.
 
-Creación de tu ConfigMap
+Tu configmap para OpenShift se encuentra definido en el archivo `src/main/kubernetes/openshift.yml` y será creado automáticamente como parte de tu despliegue. Tienes que tener en cuenta solamente dos cosas para lo siguiente:
+
+1. Tu ConfigMap tiene un nombre cuando lo defines en el archivo `openshift.yml` como se muestra a continuación una sección del archivo y puntualmente estamos hablando de la etiqueta `name`:
 ```
-oc create -f src/main/kubernetes/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: jn-quarkus-camel-gateway-base
+    group: com.javanes.micro
+    provider: javanes
+  name: cm-jn-quarkus-camel-gateway-base
+```
+2. El nombre que pongas a esa etiqueta debe de ser el mismo que pones en el archivo `application.properties` para la siguiente seccion:
+```
+# quarkus.kubernetes-config.enabled=true
+# quarkus.kubernetes-config.config-maps=cm-jn-quarkus-camel-gateway-base
+quarkus.openshift.mounts.my-volume.path=/deployments/config
+quarkus.openshift.config-map-volumes.my-volume.config-map-name=cm-jn-quarkus-camel-gateway-base
 ```
 
-Si quieres actualizar tu configuración en el configmap:
-```
-oc replace -f src/main/kubernetes/configmap.yml
-```
 #### Segundo paso: Desplegar tu aplicación
 
 Para hacer el despliegue ejecuta este comando para que puedas ver tu contenedor dentro de OpenShift:
