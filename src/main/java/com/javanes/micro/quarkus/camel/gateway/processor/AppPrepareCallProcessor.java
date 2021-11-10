@@ -38,6 +38,7 @@ public class AppPrepareCallProcessor implements Processor {
         String path = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         if(prefix != null){
             path = path.substring(prefix);
+            System.out.println("path "+path);
         }
         exchange.getMessage().setHeader(Exchange.HTTP_PATH, path);
     }

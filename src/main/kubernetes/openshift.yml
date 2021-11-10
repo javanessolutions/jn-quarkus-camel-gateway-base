@@ -1,33 +1,61 @@
-##
-# Este es el autoscaler para el pod
-#
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: as-jn-quarkus-camel-gateway-base
-spec:
-  scaleTargetRef:
-    apiVersion: apps.openshift.io/v1 
-    kind: DeploymentConfig 
-    name: jn-quarkus-camel-gateway-base
-    subresource: scale
-  minReplicas: 1 
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 75
----
-##
+# ##
+# # Este es el autoscaler para el pod
+# #
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: as-jn-quarkus-camel-gateway-base
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps.openshift.io/v1
+#     kind: DeploymentConfig
+#     name: jn-quarkus-camel-gateway-base
+#     subresource: scale
+#   minReplicas: 1
+#   maxReplicas: 10
+#   targetCPUUtilizationPercentage: 75
+# ---
+# ======================
 # Este es el ConfigMap
-#
+# ======================
 apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: jn-quarkus-camel-gateway-base
+    app: jso-fwk-quarkus-camel-gateway-base
     group: com.javanes.micro
     provider: javanes
-  name: cm-jn-quarkus-camel-gateway-base
+  name: cm-jso-fwk-quarkus-camel-gateway-base
 data:
   application.properties: |-
+    #
+    # El nivel de la bitacora.
+    #
+    # JBoss Logging soporta los estilos de bitacora de Apache:
+    #
+    # * {@link org.jboss.logmanager.Level#FATAL}
+    # * {@link org.jboss.logmanager.Level#ERROR}
+    # * {@link org.jboss.logmanager.Level#WARN}
+    # * {@link org.jboss.logmanager.Level#INFO}
+    # * {@link org.jboss.logmanager.Level#DEBUG}
+    # * {@link org.jboss.logmanager.Level#TRACE}
+    #
+    quarkus.log.level=INFO
+    # Log de camel para visualizar el exchange
+    quarkus.log.category."exchangeLog".level=DEBUG
+    quarkus.log.category."com.javanes".level=DEBUG
+
+    # ===================================================================
+    # PROPIEDADES PERSONALIZADAS DE LA CAMEL
+    #
+    #
+    #
+    # ===================================================================
+    # El numero de event-loops. La relacion es 10 milicores por event-loop
+    quarkus.vertx.event-loops-pool-size=200
+    # La cantidad de tiempo antes de que una advertencia sea mostrada, Si
+    # un event-loop es bloqueado
+    quarkus.vertx.warning-exception-time=60S
     # ===================================================================
     # PROPIEDADES PERSONALIZADAS DE LA APLICACION
     #
