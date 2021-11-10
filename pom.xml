@@ -1,21 +1,27 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.javanes.micro</groupId>
-  <artifactId>jn-quarkus-camel-gateway-base</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>jso-fwk-quarkus-camel-gateway-base</artifactId>
+  <version>ALFA-1.0.0-1</version>
+
   <name>Javanes :: Micro :: Quarkus :: Camel :: Gateway :: Base</name>
   <description>Arquetipo con un Gateway base de Quarkus en Camel</description>
+
   <organization>
     <name>Javanes Solutions S.A. de C.V.</name>
     <url>http://javanes.com</url>
   </organization>
+
   <licenses>
     <license>
       <name>GNU General Public License v3 (GPLv3)</name>
       <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
     </license>
   </licenses>
+
   <developers>
     <developer>
       <id>dante-murillo</id>
@@ -24,15 +30,18 @@
       <url>https://javanes.com</url>
     </developer>
   </developers>
+
   <scm>
     <connection>scm:git:https://github.com/javanessolutions/jn-quarkus-camel-gateway-base.git</connection>
     <developerConnection>scm:git:https://github.com/javanessolutions/jn-quarkus-camel-gateway-base.git</developerConnection>
     <url>https://github.com/javanessolutions/jn-quarkus-camel-gateway-base</url>
   </scm>
+
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/javanessolutions/jn-quarkus-camel-gateway-base/issues</url>
   </issueManagement>
+
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <encoding>UTF-8</encoding>
@@ -49,6 +58,7 @@
     <quarkus.platform.version>1.7.5.Final-redhat-00007</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -60,6 +70,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.camel.quarkus</groupId>
@@ -112,6 +123,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <repositories>
     <repository>
       <releases>
@@ -124,6 +136,7 @@
       <url>https://maven.repository.redhat.com/ga</url>
     </repository>
   </repositories>
+
   <pluginRepositories>
     <pluginRepository>
       <releases>
@@ -136,6 +149,7 @@
       <url>https://maven.repository.redhat.com/ga</url>
     </pluginRepository>
   </pluginRepositories>
+
   <build>
     <plugins>
       <plugin>
@@ -198,7 +212,15 @@
       </plugin>
     </plugins>
   </build>
+
   <profiles>
+    <profile>
+      <id>openshift</id>
+      <properties>
+        <sonar.exclusions>**/AppExceptionResponse*.java</sonar.exclusions>
+      </properties>
+    </profile>
+
     <profile>
       <id>native</id>
       <activation>
@@ -234,4 +256,5 @@
       </properties>
     </profile>
   </profiles>
+
 </project>
